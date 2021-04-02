@@ -32,3 +32,12 @@ class Vendor:
             self.inventory.append(other_persons_item)
             return True   
         return False
+    
+    # swaps first item in each vendor's inventory
+    def swap_first_item(self, recipient):
+        # if both inventories exist, perform swap of first item in list
+        if self.inventory and recipient.inventory:
+            recipient.inventory.append(self.inventory.pop(0))
+            self.inventory.append(recipient.inventory.pop(0))
+            return True  
+        return False
