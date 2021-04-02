@@ -5,7 +5,6 @@ class Vendor:
     # add an item to the Vendor's inventory
     def add(self, item):
         self.inventory.append(item)
-        print(self.inventory)
         return item
 
     # remove an item from the Vendor's inventory
@@ -17,10 +16,7 @@ class Vendor:
 
     # matches items in the vendor's inventory with a sought param
     def get_by_category(self, sought_category):
-        matching_category = []
-        for item in self.inventory:
-            if item.category == sought_category:
-                matching_category.append(item)
+        matching_category = [ item for item in self.inventory if item.category == sought_category]
         return matching_category
     
     # swaps an item with another vendor
@@ -48,9 +44,8 @@ class Vendor:
         items_list = self.get_by_category(category)
         if len(items_list) == 0:
             return None
-        sorted_items = sorted(items_list, key=lambda k: k.condition)
-        # returns item from it's place in sorting dict
-        return sorted_items[-1]
+        # returns item with max condition value
+        return max(items_list, key=lambda item: item.condition)
 
     def swap_best_by_category(self, other, my_priority, their_priority):
         my_best = self.get_best_by_category(their_priority)
