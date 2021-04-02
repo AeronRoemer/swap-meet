@@ -39,33 +39,22 @@ class Vendor:
         if self.inventory and recipient.inventory:
             recipient.inventory.append(self.inventory.pop(0))
             self.inventory.append(recipient.inventory.pop(0))
-            return True  
+            return True
         return False
 
 
     # gets best based on condiiton
     def get_best_by_category(self, category):
-        items_of_category = []
-        for item in self.inventory:
-            if item.category == category:
-                items_of_category.append({'item': item, 'condition': item.condition})
-        if len(items_of_category) == 0:
+        items_list = self.get_by_category(category)
+        if len(items_list) == 0:
             return None
-        sorted_items = sorted(items_of_category, key=lambda k: k['condition'])
+        sorted_items = sorted(items_list, key=lambda k: k.condition)
         # returns item from it's place in sorting dict
-        return sorted_items[-1]['item']
+        return sorted_items[-1]
 
     def swap_best_by_category(self, other, my_priority, their_priority):
         my_best = self.get_best_by_category(their_priority)
-        other_items = [] 
-        other_best = None      
-        # sorts other persons items using same logic as self-sort function
-        for item in other.inventory:
-            if item.category == my_priority:
-                other_items.append({'item': item, 'condition': item.condition})
-        other_items.sort(key=lambda k: k['condition'])
-        if other_items:
-            other_best = other_items[-1]['item']
+        other_best = other.get_best_by_category(my_priority)
         if my_best and other_best:
             self.swap_items(other, my_best, other_best)
             return True
